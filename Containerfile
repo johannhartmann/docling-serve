@@ -41,6 +41,8 @@ ENV \
     DOCLING_SERVE_ARTIFACTS_PATH=/opt/app-root/src/.cache/docling/models
 
 ARG UV_SYNC_EXTRA_ARGS=""
+ARG DOCLING_VLM_QUANTIZE_8BIT
+ENV DOCLING_VLM_QUANTIZE_8BIT=${DOCLING_VLM_QUANTIZE_8BIT}
 
 RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     --mount=type=cache,target=/opt/app-root/src/.cache/uv,uid=1001 \

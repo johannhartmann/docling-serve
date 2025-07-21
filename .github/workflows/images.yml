@@ -28,6 +28,7 @@ jobs:
           - name: johannhartmann/docling-serve-cu124
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cu124
+              DOCLING_VLM_QUANTIZE_8BIT=true
             platforms: linux/amd64
           - name: johannhartmann/docling-serve-cu126
             build_args: |
