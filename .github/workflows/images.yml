@@ -17,23 +17,23 @@ jobs:
     strategy:
       matrix:
         spec:
-          - name: docling-project/docling-serve
+          - name: johannhartmann/docling-serve
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-extra flash-attn
             platforms: linux/amd64, linux/arm64
-          - name: docling-project/docling-serve-cpu
+          - name: johannhartmann/docling-serve-cpu
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cpu --no-extra flash-attn
             platforms: linux/amd64, linux/arm64
-          - name: docling-project/docling-serve-cu124
+          - name: johannhartmann/docling-serve-cu124
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cu124
             platforms: linux/amd64
-          - name: docling-project/docling-serve-cu126
+          - name: johannhartmann/docling-serve-cu126
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cu126
             platforms: linux/amd64
-          - name: docling-project/docling-serve-cu128
+          - name: johannhartmann/docling-serve-cu128
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cu128
             platforms: linux/amd64
@@ -51,5 +51,5 @@ jobs:
       environment: registry-creds
       build_args: ${{ matrix.spec.build_args }}
       ghcr_image_name: ${{ matrix.spec.name }}
-      quay_image_name: ${{ matrix.spec.name }}
+      
       platforms: ${{ matrix.spec.platforms }}
