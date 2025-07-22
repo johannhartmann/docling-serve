@@ -13,7 +13,7 @@ RUN --mount=type=bind,source=os-packages.txt,target=/tmp/os-packages.txt \
     dnf config-manager --best --nodocs --setopt=install_weak_deps=False --save && \
     dnf config-manager --enable crb && \
     dnf -y update && \
-    dnf install -y $(cat /tmp/os-packages.txt) && \
+    dnf install -y $(cat /tmp/os-packages.txt | grep -v python3) && \
     dnf -y clean all && \
     rm -rf /var/cache/dnf
 
@@ -45,14 +45,24 @@ ARG UV_SYNC_EXTRA_ARGS=""
 ARG DOCLING_VLM_QUANTIZE_8BIT
 ENV DOCLING_VLM_QUANTIZE_8BIT=${DOCLING_VLM_QUANTIZE_8BIT}
 
+# Install CUDA development tools needed for building flash-attention
+RUN dnf -y install gcc gcc-c++ make && \
+    dnf -y clean all
+
 RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     --mount=type=cache,target=/opt/app-root/src/.cache/uv,uid=1001 \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     umask 002 && \
     UV_SYNC_ARGS="--frozen --no-install-project --no-dev --all-extras" && \
-    uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-extra flash-attn && \
-    FLASH_ATTENTION_SKIP_CUDA_BUILD=TRUE uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-build-isolation-package=flash-attn
+    uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-extra flash-attn
+
+# Build and install flash-attention from source
+ENV CUDA_HOME=/usr/local/cuda
+RUN git clone https://github.com/Dao-AILab/flash-attention.git /tmp/flash-attention && \
+    cd /tmp/flash-attention && \
+    pip install flash-attn . --no-build-isolation && \
+    rm -rf /tmp/flash-attention
 
 ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling qwenvl"
 
@@ -64,6 +74,9 @@ RUN echo "Downloading models..." && \
     chmod -R g=u ${DOCLING_SERVE_ARTIFACTS_PATH}
 
 COPY --chown=1001:0 ./docling_serve ./docling_serve
+COPY --chown=1001:0 ./docling-serve-wrapper.sh /opt/app-root/bin/
+RUN chmod +x /opt/app-root/bin/docling-serve-wrapper.sh
+
 RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     --mount=type=cache,target=/opt/app-root/src/.cache/uv,uid=1001 \
     --mount=type=bind,source=uv.lock,target=uv.lock \
@@ -72,4 +85,4 @@ RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
 
 EXPOSE 5001
 
-CMD ["docling-serve", "run"]
+CMD ["/opt/app-root/bin/docling-serve-wrapper.sh", "run"]
