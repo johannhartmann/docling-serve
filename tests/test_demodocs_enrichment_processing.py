@@ -30,7 +30,7 @@ async def test_demodoc_enrichment_processing(async_client, doc_path):
         "picture_description_local": json.dumps(
             {
                 "repo_id": "ds4sd/SmolDocling-256M-preview",
-                "prompt": "Describe the image in three sentences. Be consise and accurate.",
+                "prompt": "Provide a detailled description for this image.",
             }
         ),
         "generation_config": json.dumps(

@@ -27,7 +27,8 @@ async def test_demodoc_vlm_processing(async_client, doc_path):
         "pipeline": "vlm",
         "do_picture_description": "true",
         "picture_description_local": json.dumps(
-            {"repo_id": "ds4sd/SmolDocling-256M-preview"}
+            {"repo_id": "ds4sd/SmolDocling-256M-preview",
+             "propmt": "Describe the image in three sentences. Be consise and accurate."}
         ),
         "ocr_engine": "easyocr",
         "do_ocr": "true",
