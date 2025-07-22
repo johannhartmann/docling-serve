@@ -30,11 +30,12 @@ USER 1001
 WORKDIR /opt/app-root/src
 
 ENV \
-    # On container environments, always set a thread budget to avoid undesired thread congestion.
+    # On container environments, always set a thread budget to avoid undesired thread congestion.\
     OMP_NUM_THREADS=4 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     PYTHONIOENCODING=utf-8 \
+    TRANSFORMERS_VERBOSITY=info \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     UV_PROJECT_ENVIRONMENT=/opt/app-root \
@@ -53,7 +54,7 @@ RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-extra flash-attn && \
     FLASH_ATTENTION_SKIP_CUDA_BUILD=TRUE uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-build-isolation-package=flash-attn
 
-ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling"
+ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling qwenvl"
 
 RUN echo "Downloading models..." && \
     HF_HUB_DOWNLOAD_TIMEOUT="90" \
