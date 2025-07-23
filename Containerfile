@@ -13,7 +13,7 @@ RUN --mount=type=bind,source=os-packages.txt,target=/tmp/os-packages.txt \
     dnf config-manager --best --nodocs --setopt=install_weak_deps=False --save && \
     dnf config-manager --enable crb && \
     dnf -y update && \
-    dnf install -y $(cat /tmp/os-packages.txt | grep -v python3) && \
+    dnf install -y $(cat /tmp/os-packages.txt) && \
     dnf -y clean all && \
     rm -rf /var/cache/dnf
 
