@@ -60,6 +60,13 @@ docling-serve-cu128-image: Containerfile ## Build docling-serve container image 
 	$(CMD_PREFIX) docker tag ghcr.io/docling-project/docling-serve-cu128:$(TAG) ghcr.io/docling-project/docling-serve-cu128:$(BRANCH_TAG)
 	$(CMD_PREFIX) docker tag ghcr.io/docling-project/docling-serve-cu128:$(TAG) quay.io/docling-project/docling-serve-cu128:$(BRANCH_TAG)
 
+.PHONY: docling-serve-flash-image
+docling-serve-flash-image: Containerfile.flash ## Build docling-serve with flash-attention from source
+	$(ECHO_PREFIX) printf "  %-12s Containerfile.flash\n" "[docling-serve flash-attn from source]"
+	$(CMD_PREFIX) DOCKER_BUILDKIT=1 docker build --load -f Containerfile.flash -t ghcr.io/docling-project/docling-serve-flash:$(TAG) .
+	$(CMD_PREFIX) docker tag ghcr.io/docling-project/docling-serve-flash:$(TAG) ghcr.io/docling-project/docling-serve-flash:$(BRANCH_TAG)
+	$(CMD_PREFIX) docker tag ghcr.io/docling-project/docling-serve-flash:$(TAG) quay.io/docling-project/docling-serve-flash:$(BRANCH_TAG)
+
 .PHONY: action-lint
 action-lint: .action-lint ##      Lint GitHub Action workflows
 .action-lint: $(shell find .github -type f) | action-lint-file
@@ -107,3 +114,10 @@ run-docling-cu124: ## Run the docling-serve container with GPU support and assig
 	$(CMD_PREFIX) docker rm -f docling-serve-cu124 2>/dev/null || true
 	$(ECHO_PREFIX) printf "  %-12s Running docling-serve container with GPU support on port 5001...\n" "[RUN CUDA 12.4]"
 	$(CMD_PREFIX) docker run -it --gpus all --name docling-serve-cu124 -p 5001:5001 -e TRANSFORMERS_VERBOSITY=info ghcr.io/docling-project/docling-serve-cu124:main
+
+.PHONY: run-docling-flash
+run-docling-flash: ## Run the docling-serve container with flash-attention built from source
+	$(ECHO_PREFIX) printf "  %-12s Removing existing container if it exists...\n" "[CLEANUP]"
+	$(CMD_PREFIX) docker rm -f docling-serve-flash 2>/dev/null || true
+	$(ECHO_PREFIX) printf "  %-12s Running docling-serve container with flash-attention from source on port 5001...\n" "[RUN FLASH]"
+	$(CMD_PREFIX) docker run -it --gpus all --name docling-serve-flash -p 5001:5001 -e TRANSFORMERS_VERBOSITY=info ghcr.io/docling-project/docling-serve-flash:$(BRANCH_TAG)
