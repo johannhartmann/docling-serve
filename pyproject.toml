@@ -35,7 +35,7 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "docling-core>=2.32.0",
-    "docling @ git+https://github.com/johannhartmann/docling.git@3ceb0f6e34fc222ede5aa7c9dd00224df5f313e0",
+    "docling @ git+https://github.com/johannhartmann/docling.git@0a747d60aea116549cc3c3a9e64194db30f2e1c4",
     "docling-jobkit[kfp,vlm]~=1.1",
     "fastapi[standard]~=0.115",
     "httpx~=0.28",
