@@ -58,7 +58,9 @@ RUN pip install uv
 COPY pyproject.toml uv.lock ./
 
 # Install docling and dependencies to get docling-tools
-RUN uv sync --frozen --no-install-project --no-dev
+# Need to set UV_PROJECT_ENVIRONMENT to install globally
+ENV UV_PROJECT_ENVIRONMENT=/usr/local
+RUN uv sync --frozen --no-install-project --no-dev --all-extras
 
 # Download models
 ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling qwenvl"
@@ -66,7 +68,7 @@ ENV HF_HUB_DOWNLOAD_TIMEOUT=90 \
     HF_HUB_ETAG_TIMEOUT=90
 
 RUN --mount=type=cache,target=/root/.cache/huggingface,sharing=locked \
-    docling-tools models download -o /models ${MODELS_LIST}
+    /usr/local/bin/docling-tools models download -o /models ${MODELS_LIST}
 
 # Stage 3: Runtime image with CUDA runtime
 FROM nvidia/cuda:${CUDA_VERSION}-cudnn-runtime-ubuntu22.04
