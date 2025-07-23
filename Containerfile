@@ -25,10 +25,6 @@ ENV TESSDATA_PREFIX=/usr/share/tesseract/tessdata/
 # Docling layer                                                                                   #
 ###################################################################################################
 
-# Install CUDA development tools needed for building flash-attention (as root)
-RUN dnf -y install gcc gcc-c++ make && \
-    dnf -y clean all
-
 USER 1001
 
 WORKDIR /opt/app-root/src
@@ -55,14 +51,8 @@ RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     umask 002 && \
     UV_SYNC_ARGS="--frozen --no-install-project --no-dev --all-extras" && \
-    uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-extra flash-attn
-
-# Build and install flash-attention from source
-ENV CUDA_HOME=/usr/local/cuda
-RUN git clone https://github.com/Dao-AILab/flash-attention.git /tmp/flash-attention && \
-    cd /tmp/flash-attention && \
-    pip install flash-attn . --no-build-isolation && \
-    rm -rf /tmp/flash-attention
+    uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-extra flash-attn && \
+    FLASH_ATTENTION_SKIP_CUDA_BUILD=TRUE uv sync ${UV_SYNC_ARGS} ${UV_SYNC_EXTRA_ARGS} --no-build-isolation-package=flash-attn
 
 ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling qwenvl"
 
