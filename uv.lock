@@ -798,8 +798,8 @@ wheels = [
 
 [[package]]
 name = "docling"
-version = "2.42.0"
-source = { git = "https://github.com/johannhartmann/docling.git?rev=0a747d60aea116549cc3c3a9e64194db30f2e1c4#0a747d60aea116549cc3c3a9e64194db30f2e1c4" }
+version = "2.42.1"
+source = { git = "https://github.com/johannhartmann/docling.git?rev=aa4aec1dc967b8eb792220a0ab08ecbb1362ccc7#aa4aec1dc967b8eb792220a0ab08ecbb1362ccc7" }
 dependencies = [
     { name = "accelerate", marker = "platform_machine != 'x86_64' or sys_platform != 'darwin' or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-cu124') or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-cu126') or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-cu128') or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-pypi') or (extra == 'group-13-docling-serve-cu124' and extra == 'group-13-docling-serve-cu126') or (extra == 'group-13-docling-serve-cu124' and extra == 'group-13-docling-serve-cu128') or (extra == 'group-13-docling-serve-cu124' and extra == 'group-13-docling-serve-pypi') or (extra == 'group-13-docling-serve-cu126' and extra == 'group-13-docling-serve-cu128') or (extra == 'group-13-docling-serve-cu126' and extra == 'group-13-docling-serve-pypi') or (extra == 'group-13-docling-serve-cu128' and extra == 'group-13-docling-serve-pypi')" },
     { name = "beautifulsoup4", marker = "platform_machine != 'x86_64' or sys_platform != 'darwin' or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-cu124') or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-cu126') or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-cu128') or (extra == 'group-13-docling-serve-cpu' and extra == 'group-13-docling-serve-pypi') or (extra == 'group-13-docling-serve-cu124' and extra == 'group-13-docling-serve-cu126') or (extra == 'group-13-docling-serve-cu124' and extra == 'group-13-docling-serve-cu128') or (extra == 'group-13-docling-serve-cu124' and extra == 'group-13-docling-serve-pypi') or (extra == 'group-13-docling-serve-cu126' and extra == 'group-13-docling-serve-cu128') or (extra == 'group-13-docling-serve-cu126' and extra == 'group-13-docling-serve-pypi') or (extra == 'group-13-docling-serve-cu128' and extra == 'group-13-docling-serve-pypi')" },
@@ -1040,7 +1040,7 @@ pypi = [
 
 [package.metadata]
 requires-dist = [
-    { name = "docling", git = "https://github.com/johannhartmann/docling.git?rev=0a747d60aea116549cc3c3a9e64194db30f2e1c4" },
+    { name = "docling", git = "https://github.com/johannhartmann/docling.git?rev=aa4aec1dc967b8eb792220a0ab08ecbb1362ccc7" },
     { name = "docling-core", specifier = ">=2.32.0" },
     { name = "docling-jobkit", extras = ["kfp", "vlm"], specifier = "~=1.1" },
     { name = "fastapi", extras = ["standard"], specifier = "~=0.115" },
