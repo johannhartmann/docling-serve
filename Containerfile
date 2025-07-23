@@ -74,9 +74,6 @@ RUN echo "Downloading models..." && \
     chmod -R g=u ${DOCLING_SERVE_ARTIFACTS_PATH}
 
 COPY --chown=1001:0 ./docling_serve ./docling_serve
-COPY --chown=1001:0 ./docling-serve-wrapper.sh /opt/app-root/bin/
-RUN chmod +x /opt/app-root/bin/docling-serve-wrapper.sh
-
 RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     --mount=type=cache,target=/opt/app-root/src/.cache/uv,uid=1001 \
     --mount=type=bind,source=uv.lock,target=uv.lock \
@@ -85,4 +82,4 @@ RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
 
 EXPOSE 5001
 
-CMD ["/opt/app-root/bin/docling-serve-wrapper.sh", "run"]
+CMD ["docling-serve", "run"]
