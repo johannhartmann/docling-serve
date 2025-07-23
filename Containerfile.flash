@@ -60,7 +60,7 @@ COPY pyproject.toml uv.lock ./
 # Install docling and dependencies to get docling-tools
 # Need to set UV_PROJECT_ENVIRONMENT to install globally
 ENV UV_PROJECT_ENVIRONMENT=/usr/local
-RUN uv sync --frozen --no-install-project --no-dev --all-extras
+RUN uv sync --frozen --no-install-project --no-dev --all-extras --no-extra flash-attn
 
 # Download models
 ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling qwenvl"
