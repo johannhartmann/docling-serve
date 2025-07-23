@@ -25,6 +25,10 @@ ENV TESSDATA_PREFIX=/usr/share/tesseract/tessdata/
 # Docling layer                                                                                   #
 ###################################################################################################
 
+# Install CUDA development tools needed for building flash-attention (as root)
+RUN dnf -y install gcc gcc-c++ make && \
+    dnf -y clean all
+
 USER 1001
 
 WORKDIR /opt/app-root/src
@@ -44,10 +48,6 @@ ENV \
 ARG UV_SYNC_EXTRA_ARGS=""
 ARG DOCLING_VLM_QUANTIZE_8BIT
 ENV DOCLING_VLM_QUANTIZE_8BIT=${DOCLING_VLM_QUANTIZE_8BIT}
-
-# Install CUDA development tools needed for building flash-attention
-RUN dnf -y install gcc gcc-c++ make && \
-    dnf -y clean all
 
 RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
     --mount=type=cache,target=/opt/app-root/src/.cache/uv,uid=1001 \
