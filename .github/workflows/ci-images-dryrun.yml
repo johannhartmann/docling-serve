@@ -16,11 +16,11 @@ jobs:
           - name: johannhartmann/docling-serve
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-extra flash-attn
-            platforms: linux/amd64, linux/arm64
+            platforms: linux/amd64
           - name: johannhartmann/docling-serve-cpu
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cpu --no-extra flash-attn
-            platforms: linux/amd64, linux/arm64
+            platforms: linux/amd64
           - name: johannhartmann/docling-serve-cu124
             build_args: |
               UV_SYNC_EXTRA_ARGS=--no-group pypi --group cu124
