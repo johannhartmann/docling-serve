@@ -57,6 +57,8 @@ RUN --mount=from=ghcr.io/astral-sh/uv:0.7.19,source=/uv,target=/bin/uv \
 ARG MODELS_LIST="layout tableformer picture_classifier easyocr smoldocling qwenvl"
 
 RUN echo "Downloading models..." && \
+    export PATH="/opt/app-root/bin:${PATH}" && \
+    export HF_HUB_CACHE="${DOCLING_SERVE_ARTIFACTS_PATH}/.cache" && \
     HF_HUB_DOWNLOAD_TIMEOUT="90" \
     HF_HUB_ETAG_TIMEOUT="90" \
     docling-tools models download -o "${DOCLING_SERVE_ARTIFACTS_PATH}" ${MODELS_LIST} && \
